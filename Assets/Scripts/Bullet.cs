@@ -5,10 +5,12 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] [Range(0f, 100f)] private int bulletSpeed;
+    [SerializeField] private int destroyTime;
 
-    void Start()
+
+    void OnEnable()
     {
-        Destroy(gameObject, 1f);
+        Invoke("OnCollisionEnter", destroyTime);
     }
 
     void Update()
@@ -16,9 +18,10 @@ public class Bullet : MonoBehaviour
         Movement();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+        PlayerMovement.bulletPoolList.Add(gameObject); 
     }
 
     void Movement()
